@@ -1,0 +1,12 @@
+library(tidyverse)
+library(dplyr)
+library(survival)
+library(ggfortify)
+library(ggplot2)
+# https://www.kaggle.com/datasets/aysuncag/covid19-survival-dataset
+d <- read_csv("SurvivalCovid.csv") %>% filter(status == 2) %>% select("time", "sex", "ph.ecog") %>% drop_na()
+d$time <- as.integer(d$time)
+d$ph.ecog <- as.factor(d$ph.ecog)
+s <- Surv(d$time)
+autoplot(survfit(s ~ 1))
+autoplot(survfit(s ~ d$sex))
